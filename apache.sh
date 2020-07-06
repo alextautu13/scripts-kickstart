@@ -1,5 +1,17 @@
 #!/bin/bash -v
 
+# check if apache is enabled 
+is_enabled=$(systemctl is-enabled http)
+
+if [ "$is_enabled" = "disabled" ]
+then 
+systemctl start httpd
+systemctl enabled httpd
+
+fi
+
+# add dummy certs 
+
 cd /etc/pki/tls/certs ; sudo ./make-dummy-cert localhost.crt
 sudo cat /etc/pki/tls/certs/localhost.crt | sudo sed -n '/-----BEGIN PRIVATE KEY-----/,/-----END PRIVATE KEY-----/p' | sudo tee /etc/pki/tls/private/localhost.key
 sudo cat /etc/pki/tls/certs/localhost.crt | sudo sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p' | sudo tee /etc/pki/tls/certs/cert.crt
