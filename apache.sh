@@ -6,7 +6,7 @@ is_enabled=$(systemctl is-enabled http)
 if [ "$is_enabled" = "disabled" ]
 then 
 systemctl start httpd
-systemctl enabled httpd
+systemctl enable httpd
 
 fi
 
