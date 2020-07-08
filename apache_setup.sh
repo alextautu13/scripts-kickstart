@@ -75,6 +75,8 @@ WantedBy=multi-user.target
 
 EOF
 
+systemctl daemon-reload
+
 }
 
 
@@ -117,6 +119,4 @@ redirect
 index_file 
 
 # restart reload service change and restart httpd 
-systemctl daemon-reload
-systemctl stop httpd 
-systemctl start httpd 
+systemctl restart httpd 
