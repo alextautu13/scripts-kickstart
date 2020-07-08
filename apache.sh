@@ -1,6 +1,19 @@
 #!/bin/bash -v
 
+
+# configure httpd 
+
+systemctl start httpd
+systemctl enable httpd
+usermod -a -G apache ec2-user" 
+chown -R ec2-user:apache /var/www
+chmod 2775 /var/www
+find, /var/www, -type, d, -exec, chmod, 2775, {}, \; 
+find, /var/www, -type, f, -exec, chmod, 0664, {}, \; 
+ 
+
 # check if apache is enabled 
+
 is_enabled=$(systemctl is-enabled http)
 
 if [ "$is_enabled" = "disabled" ]
@@ -34,7 +47,7 @@ systemctl restart httpd
 tee /var/www/html/index.html <<EOF
 <html>
  <head>
-  <title>PHP Test</title>
+  <title>Hello AWS Test Page </title>
  </head>
  <body>
  <p>Hello AWS!</p>
