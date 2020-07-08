@@ -36,7 +36,7 @@ sed -i 's/localhost.crt/cert.crt/g' /etc/httpd/conf.d/ssl.conf
 #PUBLIC_HOSTNAME=$(TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"` && curl -H "X-aws-ec2-metadata-token: $TOKEN" -v http://169.254.169.254/latest/meta-data/public-hostname)
 
 
-tee /usr/lib/systemd/system/httpd.service <<EOF
+tee /usr/lib/systemd/system/httpd.service  &>/dev/null <<EOF
 
 # See httpd.service(8) for more information on using the httpd service.
 
@@ -78,27 +78,21 @@ EOF
 
 # add http to https redirect 
  
-tee /etc/httpd/conf.d/redirect.conf <<EOF
+tee /etc/httpd/conf.d/redirect.conf  &>/dev/null <<EOF
 <VirtualHost *:80>
 ServerName ${PUBLIC_IPV4}
 Redirect permanent / https://${PUBLIC_IPV4}/
 </VirtualHost>
-
 <VirtualHost *:80>
 ServerName ${PUBLIC_HOSTNAME}
 Redirect permanent / https://${PUBLIC_HOSTNAME}/
 </VirtualHost>             
-
 EOF 
 
 
-# restart reload service change and restart httpd 
-systemctl daemon-reload
-systemctl restart httpd 
-
 
 # create index.html
-tee /var/www/html/index.html <<EOF
+tee /var/www/html/index.html &>/dev/null <<EOF
 <html>
  <head>
   <title>Hello AWS Test Page </title>
@@ -108,5 +102,10 @@ tee /var/www/html/index.html <<EOF
  </body>
 </html>
 EOF
+
+
+# restart reload service change and restart httpd 
+systemctl daemon-reload
+systemctl restart httpd 
 
 
