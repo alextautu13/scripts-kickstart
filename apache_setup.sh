@@ -81,8 +81,7 @@ systemctl daemon-reload
 
 
 index_file () {
-cat << 'EOF' > /var/www/html/index.html 
-tee /var/www/html/index.html 
+cat << 'EOF' > /var/www/html/index.html  
 <html>
  <head>
   <title>Hello AWS Test Page </title>
@@ -97,12 +96,12 @@ EOF
 
 redirect () {
 cat << 'EOF' > /etc/httpd/conf.d/redirect.conf 
-<VirtualHost *:80>
+<VirtualHost ${PUBLIC_IPV4}:80>
 ServerName ${PUBLIC_IPV4}
 Redirect permanent / https://${PUBLIC_IPV4}/
 </VirtualHost>
 
-<VirtualHost *:80>
+<VirtualHost ${PUBLIC_HOSTNAME}:80>
 ServerName ${PUBLIC_HOSTNAME}
 Redirect permanent / https://${PUBLIC_HOSTNAME}/
 </VirtualHost>             
