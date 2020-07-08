@@ -75,6 +75,8 @@ WantedBy=multi-user.target
 
 EOF
 
+sleep 10 
+
 systemctl daemon-reload
 
 }
@@ -96,7 +98,7 @@ EOF
 
 redirect () {
 cat << 'EOF' > /etc/httpd/conf.d/redirect.conf 
-<VirtualHost ${PUBLIC_IPV4}:80>
+<VirtualHost *:80>
 ServerName ${PUBLIC_IPV4}
 Redirect permanent / https://${PUBLIC_IPV4}/
 </VirtualHost>
