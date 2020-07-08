@@ -32,13 +32,11 @@ sed -i 's/localhost.crt/cert.crt/g' /etc/httpd/conf.d/ssl.conf
 
 
 #/usr/lib/systemd/system/httpd.service
-# add to httpd.service
-
 #PUBLIC_IPV4=$(TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"` && curl -H "X-aws-ec2-metadata-token: $TOKEN" -v http://169.254.169.254/latest/meta-data/public-ipv4)
 #PUBLIC_HOSTNAME=$(TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"` && curl -H "X-aws-ec2-metadata-token: $TOKEN" -v http://169.254.169.254/latest/meta-data/public-hostname)
 
 
-tee /etc/httpd/conf.d/redirect.conf <<EOF
+tee /usr/lib/systemd/system/httpd.service <<EOF
 
 # See httpd.service(8) for more information on using the httpd service.
 
@@ -62,7 +60,8 @@ Documentation=man:httpd.service(8)
 [Service]
 Type=notify
 Environment=LANG=C
-#custom variable for EC2 Public IP and Hostnamer
+
+#custom variables for EC2 Public IP and Hostname 
 PUBLIC_IPV4=$(TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"` && curl -H "X-aws-ec2-metadata-token: $TOKEN" -v http://169.254.169.254/latest/meta-data/public-ipv4)
 PUBLIC_HOSTNAME=$(TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"` && curl -H "X-aws-ec2-metadata-token: $TOKEN" -v http://169.254.169.254/latest/meta-data/public-hostname)
 
@@ -75,10 +74,7 @@ PrivateTmp=true
 
 [Install]
 WantedBy=multi-user.target
-
 EOF
-# reload 
-systemctl daemon-reload
 
 # add http to https redirect 
  
@@ -96,7 +92,8 @@ Redirect permanent / https://${PUBLIC_HOSTNAME}/
 EOF 
 
 
-# restart httpd 
+# restart reload service change and restart httpd 
+systemctl daemon-reload
 systemctl restart httpd 
 
 
@@ -111,3 +108,5 @@ tee /var/www/html/index.html <<EOF
  </body>
 </html>
 EOF
+
+
