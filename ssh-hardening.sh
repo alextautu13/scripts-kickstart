@@ -8,6 +8,8 @@ sudo yum upgrade -y aws-amitools-ec2
 sudo sed -i  's/#PermitRootLogin yes/PermitRootLogin without-password/g' /etc/ssh/sshd_config 
 sudo passwd -l root
 sudo shred -u /etc/ssh/*_key /etc/ssh/*_key.pub
+
+# Allow no DNS for SSH
 sudo sed -i 's/#UseDNS yes/UseDNS no/g' /etc/ssh/sshd_config 
 
 if [ ! -d /root/.ssh ] ; then
