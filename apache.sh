@@ -93,6 +93,9 @@ ServerName ${PUBLIC_HOSTNAME}
 Redirect permanent / https://${PUBLIC_HOSTNAME}/
 </VirtualHost>             
 
+EOF 
+
+
 # restart httpd 
 systemctl restart httpd 
 
