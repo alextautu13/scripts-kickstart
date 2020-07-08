@@ -116,7 +116,6 @@ EOF
 configure
 add_cert
 http_service
-redirect
 index_file 
 
 # restart reload service change and restart httpd 
