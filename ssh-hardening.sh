@@ -1,5 +1,5 @@
 #!/bin/bash
-# for ami 
+# for install ami tools 
 sudo yum install -y aws-amitools-ec2 
 export PATH=$PATH:/opt/aws/bin > /etc/profile.d/aws-amitools-ec2.sh 
 sudo yum upgrade -y aws-amitools-ec2
